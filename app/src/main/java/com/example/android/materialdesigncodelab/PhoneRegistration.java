@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
@@ -27,6 +28,7 @@ public class PhoneRegistration extends AppCompatActivity {
     Context context;
     BroadcastReceiver smsSentReceiver, smsDeliveredReceiver;
     public static String number = "";
+    SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +37,15 @@ public class PhoneRegistration extends AppCompatActivity {
         update = (Button)findViewById(R.id.updateButton);
         editPhone = (EditText)findViewById(R.id.ephone);
         context = this;
+        sharedPreferences = context.getSharedPreferences("DIGI_PREF", Context.MODE_PRIVATE);
+        String number_verfied = sharedPreferences.getString("number_verified","No");
+
+        if(number_verfied.equalsIgnoreCase("Yes")){
+            Intent intent = new Intent(context,MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -110,7 +121,7 @@ public class PhoneRegistration extends AppCompatActivity {
         if(numReg){
             Toast.makeText(getBaseContext(), "Verification Successful", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(context,MainActivity.class);
-            startActivity(intent);
+            context.startActivity(intent);
         } else {
             Toast.makeText(getBaseContext(), "Could not Verify, try again", Toast.LENGTH_SHORT).show();
 
