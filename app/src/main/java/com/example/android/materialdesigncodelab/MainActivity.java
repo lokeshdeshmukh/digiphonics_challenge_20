@@ -16,6 +16,7 @@
 
 package com.example.android.materialdesigncodelab;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -39,6 +40,8 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import db.Backgroundservice;
+
 
 /**
  * Provides UI for the main screen.
@@ -51,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Intent myIntent = new Intent(getApplicationContext(), Backgroundservice.class);
+        this.startService(myIntent);
         // Adding Toolbar to Main screen
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
