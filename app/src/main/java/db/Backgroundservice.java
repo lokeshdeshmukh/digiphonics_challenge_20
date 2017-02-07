@@ -19,8 +19,9 @@ import java.util.List;
 import java.util.Set;
 
 
-import structures.Master_Message;
-import structures.Master_Message;
+
+import structures.Master_Message1;
+import structures.Master_Message1;
 import structures.Name_Master;
 
 
@@ -67,11 +68,11 @@ public class Backgroundservice extends IntentService {
 
             if(table_name[i].equalsIgnoreCase("Master_Message"))
             {
-               Type listOfTestObject = new TypeToken<ArrayList<Master_Message>>() {
+               Type listOfTestObject = new TypeToken<ArrayList<Master_Message1>>() {
                }.getType();
-               ArrayList<Master_Message> contactVO = gson.fromJson(jsonObj, listOfTestObject);
+               ArrayList<Master_Message1> contactVO = gson.fromJson(jsonObj, listOfTestObject);
 
-               for (Master_Message eventlistvo1 : contactVO) {
+               for (Master_Message1 eventlistvo1 : contactVO) {
                   setdata.insert_data_Master(table_name[i], eventlistvo1.getSNO(),
                           eventlistvo1.getRECIEVER(), eventlistvo1.getSENDER(), eventlistvo1.getMESSAGE(),
                           eventlistvo1.getDATE(), eventlistvo1.getTIME(), eventlistvo1.getGENDER());
