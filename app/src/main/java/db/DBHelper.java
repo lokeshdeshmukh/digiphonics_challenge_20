@@ -9,7 +9,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import structures.Master_Message;
+import structures.Master_Message1;
+import structures.Master_Message1;
 import structures.Name_Master;
 
 
@@ -128,15 +129,15 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public ArrayList<Master_Message> get_Data_Master(String query) {
+    public ArrayList<Master_Message1> get_Data_Master(String query) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res =  db.rawQuery(query, null);
 
         res.moveToFirst();
-        ArrayList<Master_Message> mainobj= new ArrayList<>();
+        ArrayList<Master_Message1> mainobj= new ArrayList<>();
         while(res.isAfterLast() == false){
 
-            Master_Message temp=new Master_Message();
+            Master_Message1 temp=new Master_Message1();
             temp.setSNO(res.getInt(0));
             temp.setRECIEVER(res.getString(1));
             temp.setSENDER(res.getString(2));
@@ -186,7 +187,7 @@ public class DBHelper extends SQLiteOpenHelper {
         res.moveToFirst();
         try {
             while (res.isAfterLast() == false) {
-                i = res.getInt(res.getColumnIndex("SNO"));
+                i = res.getInt(res.getColumnIndex("sno"));
                 res.moveToNext();
             }
         }
