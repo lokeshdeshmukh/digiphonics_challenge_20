@@ -18,12 +18,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import structures.ArtistInfo;
-import structures.eventlistvo;
+
+import structures.Master_Message;
+import structures.Master_Message;
+import structures.Name_Master;
+
 
 public class Backgroundservice extends IntentService {
 
-   public static String[] table_name={"Artist_Info","Upcoming_Events","Previous_Events","Audio_Files"};
+   public static String[] table_name={"Master_Message","Name_Master"};
    public static final String REQUEST_STRING = "myRequest";
    public static final String RESPONSE_STRING = "myResponse";
    public static final String RESPONSE_MESSAGE = "myResponseMessage";
@@ -48,71 +51,52 @@ public class Backgroundservice extends IntentService {
             e.printStackTrace();
          }
          SharedPreferences sharedpreferences;
-         sharedpreferences = getSharedPreferences("simjorprivate", getApplicationContext().MODE_PRIVATE);
+         sharedpreferences = getSharedPreferences("digiphonics", getApplicationContext().MODE_PRIVATE);
 
-         if(sharedpreferences.getInt("Upcomingdata",-1)==-1) {
-            SharedPreferences.Editor editor = sharedpreferences.edit();
 
-            editor.putInt("Upcomingdata", 0);
-            editor.putInt("Previousdata", 0);
-            editor.putInt("Audiodata", 0);
-            editor.commit();
-         }
-         else
-         {
 
             DBHelper setdata=new DBHelper(getApplicationContext());
 
             int maxint_previous = setdata.maxint("select max(sno) as sno  from " + table_name[i]);
 
-            String jsonObj =  new GetServerDataAsynctTask(getApplicationContext()).doInBackground("http://www.cchat.in/simjor/production/PHPFiles/getpreviouseventlist.php?msxint_previous=" + maxint_previous + "&table_name=" + table_name[i]);
+            String jsonObj =  new GetServerDataAsynctTask(getApplicationContext()).doInBackground("http://www.cchat.in/digiphonics/production/PHPFiles/getpreviouseventlist.php?msxint_previous=" + maxint_previous + "&table_name=" + table_name[i]);
             Gson gson = new GsonBuilder()
                     .disableHtmlEscaping()
                     .registerTypeAdapter(Date.class,
                             new JsonDateDeserializer()).create();
 
-            if(table_name[i].equalsIgnoreCase("Artist_Info"))
+            if(table_name[i].equalsIgnoreCase("Master_Message"))
             {
-               Type listOfTestObject = new TypeToken<ArrayList<ArtistInfo>>() {
+               Type listOfTestObject = new TypeToken<ArrayList<Master_Message>>() {
                }.getType();
-               ArrayList<ArtistInfo> contactVO = gson.fromJson(jsonObj, listOfTestObject);
+               ArrayList<Master_Message> contactVO = gson.fromJson(jsonObj, listOfTestObject);
 
-               for (ArtistInfo eventlistvo1 : contactVO) {
-                  setdata.insert_data_artist(table_name[i], eventlistvo1.getSno(),
-                          eventlistvo1.getArtist_Name(), eventlistvo1.getAge(), eventlistvo1.getDob(),
-                          eventlistvo1.getStory(), eventlistvo1.getDate(), eventlistvo1.getImage(),
-                          eventlistvo1.getGender(), eventlistvo1.getLocalimagepath());
-               }
-            } else {
-               Type listOfTestObject = new TypeToken<ArrayList<eventlistvo>>() {
-               }.getType();
-               ArrayList<eventlistvo> contactVO = gson.fromJson(jsonObj, listOfTestObject);
-
-
-               for (eventlistvo eventlistvo1 : contactVO) {
-                  setdata.insert_data(table_name[i], Integer.parseInt(eventlistvo1.getSno()), eventlistvo1.getUrl(), eventlistvo1.getFormat(), eventlistvo1.getName(), eventlistvo1.getDescription(), eventlistvo1.getDate(), eventlistvo1.getTitle_image_path(), eventlistvo1.getArtist_name(), eventlistvo1.getPlace(), "");
+               for (Master_Message eventlistvo1 : contactVO) {
+                  setdata.insert_data_Master(table_name[i], eventlistvo1.getSNO(),
+                          eventlistvo1.getRECIEVER(), eventlistvo1.getSENDER(), eventlistvo1.getMESSAGE(),
+                          eventlistvo1.getDATE(), eventlistvo1.getTIME(), eventlistvo1.getGENDER());
                }
             }
-         }
+            else if(table_name[i].equalsIgnoreCase("Name_Master"))
+            {
+               Type listOfTestObject = new TypeToken<ArrayList<Name_Master>>() {
+               }.getType();
+               ArrayList<Name_Master> contactVO = gson.fromJson(jsonObj, listOfTestObject);
+
+               for (Name_Master eventlistvo1 : contactVO) {
+                  setdata.insert_data_Name_Master(table_name[i], eventlistvo1.getSNO(),
+                          eventlistvo1.getNAME(), eventlistvo1.getMOBILE_NUMBER(), eventlistvo1.getDATE(),
+                          eventlistvo1.getGENDER());
+               }
+            }
+
          i++;
 
-         if(i==4)
+         if(i==2)
             i=0;
 
 
          Toast.makeText(getApplicationContext(),"hii",Toast.LENGTH_SHORT).show();
       }
-   }
-}
-class temp
-{
-   Set<eventlistvo> temp=new HashSet<eventlistvo>();
-
-   public Set<eventlistvo> getTemp() {
-      return temp;
-   }
-
-   public void setTemp(Set<eventlistvo> temp) {
-      this.temp = temp;
    }
 }

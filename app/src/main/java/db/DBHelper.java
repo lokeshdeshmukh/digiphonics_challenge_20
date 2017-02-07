@@ -9,8 +9,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import structures.ArtistInfo;
-import structures.eventlistvo;
+import structures.Master_Message;
+import structures.Name_Master;
+
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -35,56 +36,22 @@ public class DBHelper extends SQLiteOpenHelper {
               "create table contacts " +
                       "(id integer primary key, name text,phone text,email text, street text,place text)"
       );
-      db.execSQL("CREATE TABLE IF NOT EXISTS Upcoming_Events (" +
+      db.execSQL("CREATE TABLE IF NOT EXISTS Master_Message (" +
               "  SNO number   ," +
-              "  URL varchar(1000) NOT NULL," +
-              "  FORMAT varchar(100) NOT NULL," +
-              "  NAME varchar(1000) NOT NULL," +
-              "  DESCRIPTION varchar(2000) NOT NULL," +
-              "  DATE date NOT NULL," +
-              "  TITLE_IMAGE_PATH varchar(1000) NOT NULL," +
-              "  ARTIST_NAME varchar(1000) NOT NULL," +
-              "  localimagepath varchar(1000) ," +
-              "  place varchar(1000) NOT NULL)");
+              "  RECIEVER varchar(1000) NOT NULL," +
+              "  SENDER varchar(100) NOT NULL," +
+              "  MESSAGE varchar(1000) NOT NULL," +
+              "  DATE varchar(2000) NOT NULL," +
+              "  TIME varchar(2000) NOT NULL," +
+              "  GENDER varchar(1000) NOT NULL)");
+       db.execSQL("CREATE TABLE IF NOT EXISTS Name_Master (" +
+               "  SNO number   ," +
+               "  NAME varchar(1000) NOT NULL," +
+               "  MOBILE_NUMBER varchar(100) NOT NULL," +
+               "  DATE varchar(1000) NOT NULL," +
+               "  GENDER varchar(2000) NOT NULL)");
       
-      
-      db.execSQL("CREATE TABLE IF NOT EXISTS Previous_Events (" +
-              "  SNO number NOT NULL ," +
-              "  URL varchar(1000) NOT NULL," +
-              "  FORMAT varchar(100) NOT NULL," +
-              "  NAME varchar(1000) NOT NULL," +
-              "  DESCRIPTION varchar(2000) NOT NULL," +
-              "  DATE date NOT NULL," +
-              "  TITLE_IMAGE_PATH varchar(1000) NOT NULL," +
-              "  ARTIST_NAME varchar(1000) NOT NULL," +
-              "  localimagepath varchar(1000) ," +
-              "  place varchar(1000) NOT NULL)");
 
-      db.execSQL(
-              "CREATE TABLE IF NOT EXISTS Audio_Files (" +
-                      "  SNO number NOT NULL," +
-                      "  URL varchar(1000) NOT NULL," +
-                      "  FORMAT varchar(100) NOT NULL," +
-                      "  NAME varchar(1000) NOT NULL," +
-                      "  DESCRIPTION varchar(2000) NOT NULL," +
-                      "  DATE date NOT NULL," +
-                      "  TITLE_IMAGE_PATH varchar(1000) NOT NULL," +
-                      "  ARTIST_NAME varchar(1000) NOT NULL," +
-                      "  localimagepath varchar(1000) ," +
-                      "  place varchar(1000) NOT NULL)"
-      );
-      db.execSQL(
-              "CREATE TABLE IF NOT EXISTS `Artist_Info` (" +
-                      "  SNO number NOT NULL ," +
-                      "  Artist_Name varchar(1000) NOT NULL," +
-                      "  Age number NOT NULL," +
-                      "  DOB varchar(1000) NOT NULL," +
-                      "  Story varchar(1000) NOT NULL," +
-                      "  Date date NOT NULL," +
-                      "  Image varchar(1000) NOT NULL," +
-                      "  Gender varchar(1000) NOT NULL," +
-                      "  localimagepath varchar(1000) NOT NULL)"
-      );
    }
 
    @Override
@@ -126,69 +93,81 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 
-    public boolean insert_data_artist (String tablename, int sno, String Artist_Name, String Age,String DOB,String Story,
-                                       String Date,String Image,String Gender,String localimagepath) {
+    public boolean insert_data_Master (String tablename, int SNO, String RECIEVER, String SENDER,String MESSAGE,String DATE,
+                                       String TIME,String GENDER) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("SNO", sno);
-        contentValues.put("Artist_Name", Artist_Name);
-        contentValues.put("Age", Age);
-        contentValues.put("DOB", DOB);
-        contentValues.put("Story", Story);
-        contentValues.put("Date", Date);
-        contentValues.put("Image", Image);
-        contentValues.put("Gender", Gender);
-        contentValues.put("localimagepath", localimagepath);
+        contentValues.put("SNO", SNO);
+        contentValues.put("RECIEVER", RECIEVER);
+        contentValues.put("SENDER", SENDER);
+        contentValues.put("MESSAGE", MESSAGE);
+        contentValues.put("DATE", DATE);
+        contentValues.put("TIME", TIME);
+        contentValues.put("GENDER", GENDER);
+
 
 
         db.insert(tablename, null, contentValues);
         db.close();
         return true;
     }
-    public ArrayList<eventlistvo> get_Data(String query) {
+    public boolean insert_data_Name_Master (String tablename, int SNO, String NAME, String MOBILE_NUMBER,String DATE,String GENDER) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("SNO", SNO);
+        contentValues.put("NAME", NAME);
+        contentValues.put("MOBILE_NUMBER", MOBILE_NUMBER);
+        contentValues.put("DATE", DATE);
+        contentValues.put("GENDER", GENDER);
+
+
+
+
+        db.insert(tablename, null, contentValues);
+        db.close();
+        return true;
+    }
+
+    public ArrayList<Master_Message> get_Data_Master(String query) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res =  db.rawQuery(query, null);
 
         res.moveToFirst();
-        ArrayList<eventlistvo> mainobj=new ArrayList<eventlistvo>();
+        ArrayList<Master_Message> mainobj= new ArrayList<>();
         while(res.isAfterLast() == false){
 
-            eventlistvo temp=new eventlistvo();
-            temp.setSno(res.getString(0));
-            temp.setUrl(res.getString(1));
-            temp.setFormat(res.getString(2));
-            temp.setName(res.getString(3));
-            temp.setDescription(res.getString(4));
-            temp.setDate(res.getString(5));
-            temp.setTitle_image_path(res.getString(6));
-            temp.setArtist_name(res.getString(7));
-            temp.setLocalimagepath(res.getString(8));
-            temp.setPlace(res.getString(9));
+            Master_Message temp=new Master_Message();
+            temp.setSNO(res.getInt(0));
+            temp.setRECIEVER(res.getString(1));
+            temp.setSENDER(res.getString(2));
+            temp.setMESSAGE(res.getString(3));
+            temp.setDATE(res.getString(4));
+            temp.setTIME(res.getString(5));
+            temp.setGENDER(res.getString(6));
+
+
             res.moveToNext();
 
             mainobj.add(temp);
         }
-    db.close();
+        db.close();
         return mainobj;
     }
-    public ArrayList<ArtistInfo> get_Data_artist(String query) {
+    public ArrayList<Name_Master> get_Data_Name_Master(String query) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res =  db.rawQuery(query, null);
 
         res.moveToFirst();
-        ArrayList<ArtistInfo> mainobj= new ArrayList<>();
+        ArrayList<Name_Master> mainobj= new ArrayList<>();
         while(res.isAfterLast() == false){
 
-            ArtistInfo temp=new ArtistInfo();
-            temp.setSno(res.getInt(0));
-            temp.setArtist_Name(res.getString(1));
-            temp.setAge(res.getString(2));
-            temp.setDob(res.getString(3));
-            temp.setStory(res.getString(4));
-            temp.setDate(res.getString(5));
-            temp.setImage(res.getString(6));
-            temp.setGender(res.getString(7));
-            temp.setLocalimagepath(res.getString(8));
+            Name_Master temp=new Name_Master();
+            temp.setSNO(res.getInt(0));
+            temp.setNAME(res.getString(1));
+            temp.setMOBILE_NUMBER(res.getString(2));
+            temp.setDATE(res.getString(3));
+            temp.setGENDER(res.getString(4));
+
 
             res.moveToNext();
 
@@ -205,10 +184,15 @@ public class DBHelper extends SQLiteOpenHelper {
 
         int i=-1;
         res.moveToFirst();
-
-        while(res.isAfterLast() == false){
-            i=res.getInt(res.getColumnIndex("sno"));
-            res.moveToNext();
+        try {
+            while (res.isAfterLast() == false) {
+                i = res.getInt(res.getColumnIndex("SNO"));
+                res.moveToNext();
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
         }
     db.close();
         return i;
