@@ -1,6 +1,7 @@
 package com.example.android.materialdesigncodelab;
 
 import android.content.Context;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -11,12 +12,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import db.DBHelper;
+import db.sendmessagetoserver;
 import de.hdodenhof.circleimageview.CircleImageView;
 import structures.Master_Message1;
 import structures.Name_Master;
@@ -46,7 +54,7 @@ public class ChatBox extends AppCompatActivity
     private Name_Master name_master;
     private TextView title,bigTitle,description;
     private CircleImageView profileImage;
-    private RecyclerView recyclerView;
+    public static RecyclerView recyclerView;
     public static ArrayList<Master_Message1> master_messages = new ArrayList<>();
     public static ChatBoxAdapter chatBoxAdapter;
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
@@ -62,6 +70,29 @@ public class ChatBox extends AppCompatActivity
         description = (TextView)findViewById(R.id.description);
         profileImage = (CircleImageView)findViewById(R.id.profileImage);
         recyclerView = (RecyclerView)findViewById(R.id.chatList);
+        ImageButton send=(ImageButton)findViewById(R.id.send);
+        final EditText message=(EditText)findViewById(R.id.message);
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Master_Message1 temp=new Master_Message1();
+                temp.setSENDER(mynum + "");
+                temp.setRECIEVER(description.getText().toString());
+                temp.setMESSAGE(message.getText().toString());
+                Date nowdate=new Date();
+                temp.setDATE(String.valueOf(nowdate.getDate() + "/" + (nowdate.getMonth() + 1) + "/" + nowdate.getYear()));
+                Calendar c = Calendar.getInstance();
+                int seconds = c.get(Calendar.SECOND);
+                int minutes = c.get(Calendar.MINUTE);
+                int hours = c.get(Calendar.HOUR);
+
+                temp.setTIME(hours+":"+minutes+":"+seconds);
+                new sendmessagetoserver(ChatBox.this,temp).execute();
+                message.setText("");
+
+            }
+        });
+
         recyclerView.setNestedScrollingEnabled(true);
         final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
