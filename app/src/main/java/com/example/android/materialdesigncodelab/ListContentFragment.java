@@ -25,10 +25,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,15 +49,16 @@ public class ListContentFragment extends Fragment {
 
     public static  ArrayList<Name_Master> name_masters1 = new ArrayList<>();
     public static ContentAdapter adapter;
-    Context context;
-    RecyclerView recyclerView;
+    public static  Context context;
+    public static RecyclerView recyclerView;
+    public static EditText edittext1;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         recyclerView = (RecyclerView) inflater.inflate(
                 R.layout.recycler_view, container, false);
         context = container.getContext();
-        DBHelper dbHelper = new DBHelper(context);
+        final DBHelper dbHelper = new DBHelper(context);
         try{
             name_masters1 = dbHelper.get_Data_Name_Master("Select * from Name_Master desc");
 
@@ -67,8 +71,33 @@ public class ListContentFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter.notifyDataSetChanged();
 
+        edittext1=new EditText(context);
+        edittext1.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                try{
+                    name_masters1 = dbHelper.get_Data_Name_Master("Select * from Name_Master desc");
+
+                }catch (Exception e){
+                    Log.e("Digi Name Master: ",e.getMessage());
+                }
+                adapter = new ContentAdapter(recyclerView.getContext(),name_masters1);
+                recyclerView.setAdapter(adapter);
+                recyclerView.setHasFixedSize(false);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         return recyclerView;
     }
 

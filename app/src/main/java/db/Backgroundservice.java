@@ -3,6 +3,9 @@ package db;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Looper;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -101,8 +104,16 @@ public class Backgroundservice extends IntentService {
                   }catch (Exception e){
                      Log.e("Digi Name Master: ",e.getMessage());
                   }
-                  ListContentFragment listContentFragment = new ListContentFragment();
-                  listContentFragment.setUpAdapter();
+
+                  new Handler(Looper.getMainLooper()).post(new Runnable() {
+                     @Override
+                     public void run() {
+                        ListContentFragment.edittext1.setText("asd");
+                     }
+                  });
+
+
+
                }
             }
 
