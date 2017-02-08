@@ -56,7 +56,7 @@ public class ListContentFragment extends Fragment {
         context = container.getContext();
         DBHelper dbHelper = new DBHelper(context);
         try{
-            name_masters1 = dbHelper.get_Data_Name_Master("Select * from Name_Master");
+            name_masters1 = dbHelper.get_Data_Name_Master("Select * from Name_Master desc");
 
         }catch (Exception e){
             Log.e("Digi Name Master: ",e.getMessage());
@@ -72,9 +72,9 @@ public class ListContentFragment extends Fragment {
         return recyclerView;
     }
 
-    public void setUpAdapter(ArrayList<Name_Master> name_masters2){
+    public void setUpAdapter(){
         //needs citation
-        name_masters1 = name_masters2;
+
         adapter.notifyDataSetChanged();
     }
 

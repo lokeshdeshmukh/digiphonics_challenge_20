@@ -40,7 +40,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:id="@+id/linearMain">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -66,34 +67,20 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.widget.NestedScrollView
+<!--    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/nestedMain"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:scrollbars="none"
-        app:behavior_overlapTop="30dp"
-        android:fillViewport="true">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:id="@+id/linearMain"
-
-            >
-
-            <android.support.v7.widget.RecyclerView android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
-                android:id="@+id/chatList"
-                />
+        app:behavior_overlapTop="0dp"
+        android:fillViewport="true"
+        android:layout_margin="10dp">
 
 
 
-        </LinearLayout>
 
-    </android.support.v4.widget.NestedScrollView>
+    </android.support.v4.widget.NestedScrollView>-->
 
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
@@ -143,30 +130,67 @@
         android:id="@+id/profileImage"
         />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="bottom"
-        >
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom">
 
-        <EditText
-            android:layout_width="313dp"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Send Message"
-            android:textColor="#000000"
-            android:textColorHint="@color/cardview_shadow_start_color"
-            android:layout_marginBottom="10dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="5dp"/>
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/arrow"
-            android:layout_gravity="center"
-            android:layout_marginBottom="10dp"
-            />
+            android:layout_above="@+id/sendLayout">
 
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="bottom">
+
+                <android.support.v7.widget.RecyclerView android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="32dp"
+                    android:id="@+id/chatList"
+
+                    />
+
+            </LinearLayout>
+
+
+
+            </android.support.v4.widget.SwipeRefreshLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/sendLayout"
+
+            >
+
+            <EditText
+                android:layout_width="313dp"
+                android:layout_height="wrap_content"
+                android:hint="Send Message"
+                android:textColor="#000000"
+                android:textColorHint="@color/cardview_shadow_start_color"
+                android:layout_marginBottom="10dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/arrow"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
 
 </android.support.design.widget.CoordinatorLayout>

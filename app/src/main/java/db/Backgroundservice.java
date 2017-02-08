@@ -25,6 +25,8 @@ import structures.Master_Message1;
 import structures.Master_Message1;
 import structures.Name_Master;
 
+import static com.example.android.materialdesigncodelab.ListContentFragment.name_masters1;
+
 
 public class Backgroundservice extends IntentService {
 
@@ -92,8 +94,15 @@ public class Backgroundservice extends IntentService {
                }
                //smit update list
                if(contactVO.size()>0){
+                  DBHelper dbHelper = new DBHelper(this);
+                  try{
+                     name_masters1 = dbHelper.get_Data_Name_Master("Select * from Name_Master desc");
+
+                  }catch (Exception e){
+                     Log.e("Digi Name Master: ",e.getMessage());
+                  }
                   ListContentFragment listContentFragment = new ListContentFragment();
-                  listContentFragment.setUpAdapter(contactVO);
+                  listContentFragment.setUpAdapter();
                }
             }
 
