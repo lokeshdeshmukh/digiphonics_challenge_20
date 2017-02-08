@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 
+import com.example.android.materialdesigncodelab.ListContentFragment;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -88,6 +89,11 @@ public class Backgroundservice extends IntentService {
                   setdata.insert_data_Name_Master(table_name[i], eventlistvo1.getSNO(),
                           eventlistvo1.getNAME(), eventlistvo1.getMOBILE_NUMBER(), eventlistvo1.getDATE(),
                           eventlistvo1.getGENDER());
+               }
+               //smit update list
+               if(contactVO.size()>0){
+                  ListContentFragment listContentFragment = new ListContentFragment();
+                  listContentFragment.setUpAdapter(contactVO);
                }
             }
 

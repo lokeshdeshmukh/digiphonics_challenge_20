@@ -1,15 +1,23 @@
 package structures;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
 /**
  * Created by loke09 on 10/01/17.
  */
-public class Name_Master {
-
-    public int SNO;
-    public String NAME;
-    public String MOBILE_NUMBER;
-    public String DATE;
-    public String GENDER;
+public class Name_Master implements Serializable {
+    @SerializedName("SNO")
+    private int SNO;
+    @SerializedName("NAME")
+    private String NAME;
+    @SerializedName("MOBILE_NUMBER")
+    private String MOBILE_NUMBER;
+    @SerializedName("DATE")
+    private String DATE;
+    @SerializedName("GENDER")
+    private String GENDER;
 
     public int getSNO() {
         return SNO;

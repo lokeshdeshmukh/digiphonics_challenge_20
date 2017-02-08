@@ -10,6 +10,11 @@ import android.view.animation.AlphaAnimation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+import structures.Name_Master;
+
+import static com.example.android.materialdesigncodelab.R.drawable.e;
+
 /**
  * Created by Timmy on 2/8/17.
  */
@@ -28,13 +33,43 @@ public class ChatBox extends AppCompatActivity
     private TextView mTitle;
     private AppBarLayout mAppBarLayout;
     private Toolbar mToolbar;
-
+    private Name_Master name_master;
+    private TextView title,bigTitle,description;
+    private CircleImageView profileImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chatbox);
+        title = (TextView)findViewById(R.id.title);
+        bigTitle = (TextView)findViewById(R.id.bigTitle);
+        description = (TextView)findViewById(R.id.description);
+        profileImage = (CircleImageView)findViewById(R.id.profileImage);
 
+        name_master = (Name_Master)getIntent().getBundleExtra("bundle").getSerializable("Name_Master");
+        if(name_master!=null){
+            if(name_master.getNAME()!=null){
+                title.setText(name_master.getNAME());
+                bigTitle.setText(name_master.getNAME());
+            }else{
+                title.setText("");
+                bigTitle.setText("");
+            }
+
+            if(name_master.getMOBILE_NUMBER()!=null){
+                description.setText(name_master.getMOBILE_NUMBER());
+
+            }else{
+                description.setText("");
+            }
+            if(name_master.getGENDER()!=null){
+                if(name_master.getGENDER().equalsIgnoreCase("Male")){
+                    profileImage.setImageResource(R.drawable.man);
+                } else {
+                    profileImage.setImageResource(R.drawable.girl);
+                }
+            }
+        }
         bindActivity();
 
         mAppBarLayout.addOnOffsetChangedListener(this);

@@ -49,14 +49,16 @@
                         android:layout_gravity="center_horizontal"
                         android:gravity="bottom|center"
                         android:textSize="30sp"
-                        android:layout_marginTop="8dp"/>
+                        android:layout_marginTop="8dp"
+                        android:id="@+id/bigTitle"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Cult and Curious"
                         android:layout_marginTop="4dp"
-                        android:layout_gravity="center_horizontal"/>
+                        android:layout_gravity="center_horizontal"
+                        android:id="@+id/description"/>
                 </LinearLayout>
 
             </FrameLayout>
@@ -134,10 +136,11 @@
         app:border_width="2dp"
         app:finalHeight="32dp"
         app:finalYPosition="2dp"
-        app:layout_behavior="com.example.android.materialdesigncodelab.utils.AvatarImageBehavior"
+        app:layout_behavior="utils.AvatarImageBehavior"
         app:startHeight="2dp"
         app:startToolbarPosition="2dp"
         app:startXPosition="2dp"
+        android:id="@+id/profileImage"
         />
 
     <LinearLayout
