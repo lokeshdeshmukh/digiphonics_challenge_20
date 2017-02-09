@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.lang.reflect.Field;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -94,14 +95,26 @@ public class ChatBox extends AppCompatActivity
         });
 
         recyclerView.setNestedScrollingEnabled(true);
-        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipeRefreshLayout);
+        /*final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipeRefreshLayout);
+        try {
+            Field f = swipeRefreshLayout.getClass().getDeclaredField("mCircleView");
+            f.setAccessible(true);
+            ImageView img = (ImageView)f.get(swipeRefreshLayout);
+            img.setImageResource(0);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 mAppBarLayout.setExpanded(true);
                 swipeRefreshLayout.setRefreshing(false);
             }
-        });
+        });*/
+
+
         context = this;
 
 
