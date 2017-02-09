@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -142,6 +143,13 @@ public class ChatBox extends AppCompatActivity
                     recyclerView.setLayoutManager(staggeredGridLayoutManager);
                     recyclerView.setAdapter(chatBoxAdapter);
 
+                    DisplayMetrics displaymetrics = new DisplayMetrics();
+                    getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+
+                    int a =  (displaymetrics.heightPixels*80)/100;
+
+                    recyclerView.getLayoutParams().height =a;
+
                 }catch (Exception e){
 
                 }
@@ -170,7 +178,7 @@ public class ChatBox extends AppCompatActivity
         mTitle          = (TextView) findViewById(R.id.title);
         mTitleContainer = (LinearLayout) findViewById(R.id.linearMain);
         mAppBarLayout   = (AppBarLayout) findViewById(R.id.appbarMain);
-        //mAppBarLayout.setExpanded(false);
+
     }
 
     @Override
