@@ -117,14 +117,5 @@ public class PhoneRegistration extends AppCompatActivity {
         unregisterReceiver(smsDeliveredReceiver);
     }
 
-    public void numberRegistered(boolean numReg){
-        if(numReg){
-            Toast.makeText(getBaseContext(), "Verification Successful", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(context,MainActivity.class);
-            context.startActivity(intent);
-        } else {
-            Toast.makeText(getBaseContext(), "Could not Verify, try again", Toast.LENGTH_SHORT).show();
 
-        }
-    }
 }

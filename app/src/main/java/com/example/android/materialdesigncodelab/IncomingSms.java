@@ -10,6 +10,8 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 
+import static com.example.android.materialdesigncodelab.ListContentFragment.context;
+
 /**
  * Created by Timmy on 2/5/17.
  */
@@ -43,18 +45,30 @@ public class IncomingSms extends BroadcastReceiver {
                             "senderNum: "+ senderNum + ", message: " + message, duration);
                     toast.show();
 
-                    if(PhoneRegistration.number.equalsIgnoreCase(message)){
+                    if(message.equalsIgnoreCase("+91"+PhoneRegistration.number)){
                         SharedPreferences sharedPreferences = context.getSharedPreferences("DIGI_PREF",Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("number_verified","Yes");
                         editor.apply();
-                        PhoneRegistration phoneRegistration = new PhoneRegistration();
-                        phoneRegistration.numberRegistered(true);
+                        numberRegistered(true,context);
                     }
 
                 }
             }
         }catch (Exception e){
+
+        }
+    }
+
+    public void numberRegistered(boolean numReg, Context context){
+        if(numReg){
+            Toast.makeText(context, "Verification Successful", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent();
+            intent.setClassName("com.example.android.materialdesigncodelab","com.example.android.materialdesigncodelab.MainActivity");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        } else {
+            Toast.makeText(context, "Could not Verify, try again", Toast.LENGTH_SHORT).show();
 
         }
     }
